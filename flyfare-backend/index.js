@@ -69,8 +69,12 @@ app.post('/search', async (req, res) => {
             return {
                 airline: airlineName,
                 duration: flight.itineraries[0].segments[0].duration,
-                departTime: flight.itineraries[0].segment[0].departure.at,
-                arriveTime: flight.itineraries[0].segment[0].arrival.at,
+                departTime: flight.itineraries[0].segments[0].departure.at,
+                arriveTime: flight.itineraries[0].segments[0].arrival.at,
+                departIATACode:
+                    flight.itineraries[0].segments[0].departure.iataCode,
+                arriveIATACode:
+                    flight.itineraries[0].segments[0].arrival.iataCode,
                 price: flight.price.total,
                 currency: flight.price.currency,
                 stops: flight.itineraries[0].segments[0].numberOfStops,
