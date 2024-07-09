@@ -11,6 +11,8 @@ export const SearchForm = () => {
     const [flightResults, setFlightResults] = useState([]);
     const [error, setError] = useState('');
 
+    const apiUrl = import.meta.env.VITE_FLYFARE_BACKEND_API_URL;
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -23,21 +25,18 @@ export const SearchForm = () => {
 
         // API call here
         try {
-            const response = await fetch(
-                'https://flyfare.onrender.com/search',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        departFrom,
-                        arriveAt,
-                        departDate,
-                        arriveDate,
-                    }),
+            const response = await fetch(`${apiUrl}/search`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-            );
+                body: JSON.stringify({
+                    departFrom,
+                    arriveAt,
+                    departDate,
+                    arriveDate,
+                }),
+            });
 
             if (response.ok) {
                 const data = await response.json();
@@ -48,8 +47,10 @@ export const SearchForm = () => {
             }
         } catch (error) {
             console.error('Error in handleSubmit: ', error.message);
+            setError('An unexpected error occured. Please try again.');
+        } finally {
+            setSearching(false);
         }
-        setSearching(false);
     };
     return (
         <div className="w-screen">
